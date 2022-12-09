@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.example.demo.model.persistence.Item;
 import com.example.demo.model.persistence.repositories.ItemRepository;
+import com.example.demo.util.TestUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ItemControllerUnitTest {
@@ -31,16 +32,7 @@ public class ItemControllerUnitTest {
 	
 	@Test
 	public void getItemsTest() {
-		List<Item> availableItems = new ArrayList<>();
-		Item firstItem = getFirstItem();
-		availableItems.add(firstItem);
-		
-		Item secondItem = new Item();
-		firstItem.setId(2L);
-		firstItem.setName("Square Widget");
-		firstItem.setPrice(new BigDecimal(1.99));
-		firstItem.setDescription("A widget that is square.");
-		availableItems.add(secondItem);
+		List<Item> availableItems = TestUtil.getItemList();
 		
 		when(itemRepository.findAll()).thenReturn(availableItems);
 		
@@ -54,7 +46,7 @@ public class ItemControllerUnitTest {
 	
 	@Test
 	public void getItemByIdTest() {
-		Item firstItem = getFirstItem();
+		Item firstItem = TestUtil.getFirstItem();
 		Long id = firstItem.getId();
 		
 		when(itemRepository.findById(id)).thenReturn(Optional.of(firstItem));
@@ -69,7 +61,7 @@ public class ItemControllerUnitTest {
 	
 	@Test
 	public void getItemByNameTest() {
-		Item firstItem = getFirstItem();
+		Item firstItem = TestUtil.getFirstItem();
 		String name = firstItem.getName();
 		
 		when(itemRepository.findByName(name)).thenReturn(Arrays.asList(firstItem));
@@ -80,15 +72,5 @@ public class ItemControllerUnitTest {
 		assertEquals(firstItem, resultItem);
 		
 		verify(itemRepository).findByName(name);
-	}
-	
-	private Item getFirstItem() {
-		Item firstItem = new Item();
-		firstItem.setId(1L);
-		firstItem.setName("Round Widget");
-		firstItem.setPrice(new BigDecimal(2.99));
-		firstItem.setDescription("A widget that is round.");
-		
-		return firstItem;
 	}
 }
