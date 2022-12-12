@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.example.demo.model.persistence.Cart;
@@ -59,6 +60,17 @@ public class OrderControllerUnitTest {
 	}
 	
 	@Test
+	public void orderSubmissionNoUserTest() {
+		//Add mock outputs for given inputs here
+		when(userRepository.findByUsername("me")).thenReturn(null);
+		
+		ResponseEntity<UserOrder> result = orderController.submit("me");
+		HttpStatus responseStatus = result.getStatusCode();
+		
+		assertEquals(HttpStatus.NOT_FOUND, responseStatus);
+	}
+	
+	@Test
 	public void orderHistoryTest() {
 		// Cart attached to User, initially empty
 		User testUser = TestUtil.getTestUser();
@@ -90,5 +102,16 @@ public class OrderControllerUnitTest {
 		List<UserOrder> retrievedOrders = response.getBody();
 		
 		assertEquals(exampleOrders, retrievedOrders);
+	}
+	
+	@Test
+	public void orderHistoryNoUserTest() {
+		//Add mock outputs for given inputs here
+		when(userRepository.findByUsername("me")).thenReturn(null);
+		
+		ResponseEntity<List<UserOrder>> result = orderController.getOrdersForUser("me");
+		HttpStatus responseStatus = result.getStatusCode();
+		
+		assertEquals(HttpStatus.NOT_FOUND, responseStatus);
 	}
 }
