@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -55,6 +56,34 @@ public class UserControllerUnitTest {
 	}
 	
 	@Test
+	public void createUserInvalidPasswordLength() {
+		
+		CreateUserRequest createUserRequest = new CreateUserRequest();
+		createUserRequest.setUsername("me");
+		createUserRequest.setPassword("abc");
+		createUserRequest.setConfirmPassword("abc");
+		
+		ResponseEntity<User> result = userController.createUser(createUserRequest);
+		HttpStatus responseStatus = result.getStatusCode();
+		
+		assertEquals(HttpStatus.BAD_REQUEST, responseStatus);
+	}
+	
+	@Test
+	public void createUserMismatchPasswords() {
+		
+		CreateUserRequest createUserRequest = new CreateUserRequest();
+		createUserRequest.setUsername("me");
+		createUserRequest.setPassword("testPassword");
+		createUserRequest.setConfirmPassword("testPassword2");
+		
+		ResponseEntity<User> result = userController.createUser(createUserRequest);
+		HttpStatus responseStatus = result.getStatusCode();
+		
+		assertEquals(HttpStatus.BAD_REQUEST, responseStatus);
+	}
+	
+	@Test
 	public void findById() {
 		User testUser = new User();
 		testUser.setId(1L);
@@ -88,5 +117,16 @@ public class UserControllerUnitTest {
 		assertEquals(testUser.getId(), responseUser.getId());
 		
 		Mockito.verify(userRepository).findByUsername("Tester");
+	}
+	
+	@Test
+	public void findByInvalidUsername() {
+		String invalidUsername = "fake user";
+		when(userRepository.findByUsername(invalidUsername)).thenReturn(null);
+		
+		ResponseEntity<User> result = userController.findByUserName(invalidUsername);
+		HttpStatus responseStatus = result.getStatusCode();
+		
+		assertEquals(HttpStatus.NOT_FOUND, responseStatus);
 	}
 }
