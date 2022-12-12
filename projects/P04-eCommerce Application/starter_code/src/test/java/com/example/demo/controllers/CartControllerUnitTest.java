@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.example.demo.model.persistence.Cart;
@@ -63,6 +64,46 @@ public class CartControllerUnitTest {
 	}
 	
 	@Test
+	public void addToCartNoUserTest() {
+		String invalidUsername = "me";
+		ModifyCartRequest cartRequest = new ModifyCartRequest();
+		cartRequest.setUsername(invalidUsername);
+		cartRequest.setItemId(1L);
+		cartRequest.setQuantity(2);
+		
+		//Add mock outputs for given inputs here
+		when(userRepository.findByUsername(invalidUsername)).thenReturn(null);
+		
+		ResponseEntity<Cart> response = cartController.addTocart(cartRequest);
+		HttpStatus responseStatus = response.getStatusCode();
+		
+		assertEquals(HttpStatus.NOT_FOUND, responseStatus);
+	}
+	
+	@Test
+	public void addToCartNoItemTest() {
+		// Cart attached to User, initially empty
+		User testUser = TestUtil.getTestUser();
+		
+		// Invalid item id - so no item found in DB
+		Long invalidItemId = 3L;
+		
+		ModifyCartRequest cartRequest = new ModifyCartRequest();
+		cartRequest.setUsername(testUser.getUsername());
+		cartRequest.setItemId(invalidItemId);
+		cartRequest.setQuantity(2);
+		
+		//Add mock outputs for given inputs here
+		when(userRepository.findByUsername(testUser.getUsername())).thenReturn(testUser);
+		when(itemRepository.findById(invalidItemId)).thenReturn(Optional.empty());
+		
+		ResponseEntity<Cart> response = cartController.addTocart(cartRequest);
+		HttpStatus responseStatus = response.getStatusCode();
+		
+		assertEquals(HttpStatus.NOT_FOUND, responseStatus);
+	}
+	
+	@Test
 	public void removeFromCartTest() {
 		// Cart attached to User, initially empty
 		User testUser = TestUtil.getTestUser();
@@ -92,5 +133,45 @@ public class CartControllerUnitTest {
 		assertEquals(1, resultCart.getItems().size());
 		
 		assertEquals(expectedCartTotal, resultCart.getTotal());
+	}
+	
+	@Test
+	public void removeFromCartNoUserTest() {
+		String invalidUsername = "me";
+		ModifyCartRequest cartRequest = new ModifyCartRequest();
+		cartRequest.setUsername(invalidUsername);
+		cartRequest.setItemId(1L);
+		cartRequest.setQuantity(2);
+		
+		//Add mock outputs for given inputs here
+		when(userRepository.findByUsername(invalidUsername)).thenReturn(null);
+		
+		ResponseEntity<Cart> response = cartController.removeFromcart(cartRequest);
+		HttpStatus responseStatus = response.getStatusCode();
+		
+		assertEquals(HttpStatus.NOT_FOUND, responseStatus);
+	}
+	
+	@Test
+	public void removeFromCartNoItemTest() {
+		// Cart attached to User, initially empty
+		User testUser = TestUtil.getTestUser();
+		
+		// Invalid item id - so no item found in DB
+		Long invalidItemId = 3L;
+		
+		ModifyCartRequest cartRequest = new ModifyCartRequest();
+		cartRequest.setUsername(testUser.getUsername());
+		cartRequest.setItemId(invalidItemId);
+		cartRequest.setQuantity(2);
+		
+		//Add mock outputs for given inputs here
+		when(userRepository.findByUsername(testUser.getUsername())).thenReturn(testUser);
+		when(itemRepository.findById(invalidItemId)).thenReturn(Optional.empty());
+		
+		ResponseEntity<Cart> response = cartController.removeFromcart(cartRequest);
+		HttpStatus responseStatus = response.getStatusCode();
+		
+		assertEquals(HttpStatus.NOT_FOUND, responseStatus);
 	}
 }
