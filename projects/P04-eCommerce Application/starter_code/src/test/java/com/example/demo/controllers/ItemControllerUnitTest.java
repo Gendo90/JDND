@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.example.demo.model.persistence.Item;
@@ -60,7 +61,7 @@ public class ItemControllerUnitTest {
 	}
 	
 	@Test
-	public void getItemByNameTest() {
+	public void getItemsByNameTest() {
 		Item firstItem = TestUtil.getFirstItem();
 		String name = firstItem.getName();
 		
@@ -72,5 +73,31 @@ public class ItemControllerUnitTest {
 		assertEquals(firstItem, resultItem);
 		
 		verify(itemRepository).findByName(name);
+	}
+	
+	@Test
+	public void getItemsByNameNullTest() {
+		Item firstItem = TestUtil.getFirstItem();
+		String name = firstItem.getName();
+		
+		when(itemRepository.findByName(name)).thenReturn(null);
+		
+		ResponseEntity<List<Item>> result = itemController.getItemsByName(name);
+		HttpStatus responseStatus = result.getStatusCode();
+		
+		assertEquals(HttpStatus.NOT_FOUND, responseStatus);
+	}
+	
+	@Test
+	public void getItemsByNameNoItemsTest() {
+		Item firstItem = TestUtil.getFirstItem();
+		String name = firstItem.getName();
+		
+		when(itemRepository.findByName(name)).thenReturn(Arrays.asList());
+		
+		ResponseEntity<List<Item>> result = itemController.getItemsByName(name);
+		HttpStatus responseStatus = result.getStatusCode();
+		
+		assertEquals(HttpStatus.NOT_FOUND, responseStatus);
 	}
 }
