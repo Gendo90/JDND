@@ -72,6 +72,13 @@
 		    <artifactId>byte-buddy</artifactId>
 		    <version>1.12.19</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-log4j12</artifactId>
+		    <version>2.0.5</version>
+		    <type>pom</type>
+		</dependency>
 	</dependencies>
 
 	<build>
