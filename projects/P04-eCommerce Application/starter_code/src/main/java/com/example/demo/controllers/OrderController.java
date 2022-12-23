@@ -20,7 +20,7 @@ import com.example.demo.model.persistence.repositories.UserRepository;
 @RequestMapping("/api/order")
 public class OrderController {
 	
-	private static final Logger log = Logger.getLogger(UserController.class);
+	private static final Logger log = Logger.getLogger(OrderController.class);
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -29,7 +29,7 @@ public class OrderController {
 	private OrderRepository orderRepository;	
 	
 	@PostMapping("/submit/{username}")
-	public ResponseEntity<UserOrder> submit(@PathVariable String username) {
+	public ResponseEntity<UserOrder> submit(@PathVariable String username) throws Exception {
 		User user = userRepository.findByUsername(username);
 		if(user == null) {
 			log.warn("User not found for order submission!");
@@ -42,7 +42,7 @@ public class OrderController {
 	}
 	
 	@GetMapping("/history/{username}")
-	public ResponseEntity<List<UserOrder>> getOrdersForUser(@PathVariable String username) {
+	public ResponseEntity<List<UserOrder>> getOrdersForUser(@PathVariable String username) throws Exception {
 		User user = userRepository.findByUsername(username);
 		if(user == null) {
 			log.warn("User not found for order history!");

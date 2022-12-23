@@ -40,7 +40,7 @@ public class CartControllerUnitTest {
 	private CartController cartController;
 	
 	@Test
-	public void addToCartTest() {
+	public void addToCartTest() throws Exception {
 		// Cart attached to User, initially empty
 		User testUser = TestUtil.getTestUser();
 		
@@ -64,7 +64,7 @@ public class CartControllerUnitTest {
 	}
 	
 	@Test
-	public void addToCartNoUserTest() {
+	public void addToCartNoUserTest() throws Exception {
 		String invalidUsername = "me";
 		ModifyCartRequest cartRequest = new ModifyCartRequest();
 		cartRequest.setUsername(invalidUsername);
@@ -81,7 +81,7 @@ public class CartControllerUnitTest {
 	}
 	
 	@Test
-	public void addToCartNoItemTest() {
+	public void addToCartNoItemTest() throws Exception {
 		// Cart attached to User, initially empty
 		User testUser = TestUtil.getTestUser();
 		
@@ -104,7 +104,7 @@ public class CartControllerUnitTest {
 	}
 	
 	@Test
-	public void removeFromCartTest() {
+	public void removeFromCartTest() throws Exception {
 		// Cart attached to User, initially empty
 		User testUser = TestUtil.getTestUser();
 		
@@ -136,7 +136,7 @@ public class CartControllerUnitTest {
 	}
 	
 	@Test
-	public void removeFromCartNoUserTest() {
+	public void removeFromCartNoUserTest() throws Exception {
 		String invalidUsername = "me";
 		ModifyCartRequest cartRequest = new ModifyCartRequest();
 		cartRequest.setUsername(invalidUsername);
@@ -153,7 +153,7 @@ public class CartControllerUnitTest {
 	}
 	
 	@Test
-	public void removeFromCartNoItemTest() {
+	public void removeFromCartNoItemTest() throws Exception {
 		// Cart attached to User, initially empty
 		User testUser = TestUtil.getTestUser();
 		

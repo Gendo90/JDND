@@ -37,7 +37,7 @@ public class UserControllerUnitTest {
 	private UserController userController;
 	
 	@Test
-	public void createUser() {
+	public void createUser() throws Exception {
 		when(bCryptPasswordEncoder.encode("testPassword")).thenReturn("hashedPassword");
 		
 		CreateUserRequest createUserRequest = new CreateUserRequest();
@@ -56,7 +56,7 @@ public class UserControllerUnitTest {
 	}
 	
 	@Test
-	public void createUserInvalidPasswordLength() {
+	public void createUserInvalidPasswordLength() throws Exception {
 		
 		CreateUserRequest createUserRequest = new CreateUserRequest();
 		createUserRequest.setUsername("me");
@@ -70,7 +70,7 @@ public class UserControllerUnitTest {
 	}
 	
 	@Test
-	public void createUserMismatchPasswords() {
+	public void createUserMismatchPasswords() throws Exception {
 		
 		CreateUserRequest createUserRequest = new CreateUserRequest();
 		createUserRequest.setUsername("me");
@@ -84,7 +84,7 @@ public class UserControllerUnitTest {
 	}
 	
 	@Test
-	public void findById() {
+	public void findById() throws Exception {
 		User testUser = new User();
 		testUser.setId(1L);
 		testUser.setUsername("Tester");
@@ -103,7 +103,7 @@ public class UserControllerUnitTest {
 	}
 	
 	@Test
-	public void findByUsername() {
+	public void findByUsername() throws Exception {
 		User testUser = new User();
 		testUser.setId(1L);
 		testUser.setUsername("Tester");
@@ -120,7 +120,7 @@ public class UserControllerUnitTest {
 	}
 	
 	@Test
-	public void findByInvalidUsername() {
+	public void findByInvalidUsername() throws Exception {
 		String invalidUsername = "fake user";
 		when(userRepository.findByUsername(invalidUsername)).thenReturn(null);
 		

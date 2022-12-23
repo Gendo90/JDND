@@ -1,7 +1,5 @@
 package com.example.demo.controllers;
 
-import java.util.Optional;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,18 +33,20 @@ public class UserController {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@GetMapping("/id/{id}")
-	public ResponseEntity<User> findById(@PathVariable Long id) {
+	public ResponseEntity<User> findById(@PathVariable Long id) throws Exception {
 		return ResponseEntity.of(userRepository.findById(id));
 	}
 	
 	@GetMapping("/{username}")
-	public ResponseEntity<User> findByUserName(@PathVariable String username) {
+	public ResponseEntity<User> findByUserName(@PathVariable String username) throws Exception {
 		User user = userRepository.findByUsername(username);
 		return user == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(user);
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<User> createUser(@RequestBody CreateUserRequest createUserRequest) {
+	public ResponseEntity<User> createUser(@RequestBody CreateUserRequest createUserRequest) throws Exception {
+		//Uncomment below line to check error logging (divide by zero error example) 
+		//Integer n=10/0;
 		User user = new User();
 		user.setUsername(createUserRequest.getUsername());
 		Cart cart = new Cart();
@@ -57,10 +57,10 @@ public class UserController {
 			//System.out.println("Error - Either length is less than 7 or pass and conf pass do not match. Unable to create ",
 			//		createUserRequest.getUsername());
 			if(createUserRequest.getPassword().length()<7) {
-				log.warn("User creation failed - insufficient password length");
+				log.error("User creation failed - insufficient password length");
 			}
 			else {
-				log.warn("User creation failed - password mismatch");
+				log.error("User creation failed - password mismatch");
 			}
 
 			return ResponseEntity.badRequest().build();

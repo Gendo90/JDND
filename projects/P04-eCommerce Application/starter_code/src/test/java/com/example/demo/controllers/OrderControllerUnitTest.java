@@ -35,7 +35,7 @@ public class OrderControllerUnitTest {
 	private OrderController orderController;
 	
 	@Test
-	public void orderSubmissionTest() {
+	public void orderSubmissionTest() throws Exception {
 		// Cart attached to User, initially empty
 		User testUser = TestUtil.getTestUser();
 		
@@ -60,7 +60,7 @@ public class OrderControllerUnitTest {
 	}
 	
 	@Test
-	public void orderSubmissionNoUserTest() {
+	public void orderSubmissionNoUserTest() throws Exception {
 		//Add mock outputs for given inputs here
 		when(userRepository.findByUsername("me")).thenReturn(null);
 		
@@ -71,7 +71,7 @@ public class OrderControllerUnitTest {
 	}
 	
 	@Test
-	public void orderHistoryTest() {
+	public void orderHistoryTest() throws Exception {
 		// Cart attached to User, initially empty
 		User testUser = TestUtil.getTestUser();
 		
@@ -105,7 +105,7 @@ public class OrderControllerUnitTest {
 	}
 	
 	@Test
-	public void orderHistoryNoUserTest() {
+	public void orderHistoryNoUserTest() throws Exception {
 		//Add mock outputs for given inputs here
 		when(userRepository.findByUsername("me")).thenReturn(null);
 		

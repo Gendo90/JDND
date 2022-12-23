@@ -20,17 +20,17 @@ public class ItemController {
 	private ItemRepository itemRepository;
 	
 	@GetMapping
-	public ResponseEntity<List<Item>> getItems() {
+	public ResponseEntity<List<Item>> getItems() throws Exception {
 		return ResponseEntity.ok(itemRepository.findAll());
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Item> getItemById(@PathVariable Long id) {
+	public ResponseEntity<Item> getItemById(@PathVariable Long id) throws Exception {
 		return ResponseEntity.of(itemRepository.findById(id));
 	}
 	
 	@GetMapping("/name/{name}")
-	public ResponseEntity<List<Item>> getItemsByName(@PathVariable String name) {
+	public ResponseEntity<List<Item>> getItemsByName(@PathVariable String name) throws Exception {
 		List<Item> items = itemRepository.findByName(name);
 		return items == null || items.isEmpty() ? ResponseEntity.notFound().build()
 				: ResponseEntity.ok(items);

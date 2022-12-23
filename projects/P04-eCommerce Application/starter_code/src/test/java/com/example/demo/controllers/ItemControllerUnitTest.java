@@ -32,7 +32,7 @@ public class ItemControllerUnitTest {
 	private ItemController itemController;
 	
 	@Test
-	public void getItemsTest() {
+	public void getItemsTest() throws Exception {
 		List<Item> availableItems = TestUtil.getItemList();
 		
 		when(itemRepository.findAll()).thenReturn(availableItems);
@@ -46,7 +46,7 @@ public class ItemControllerUnitTest {
 	}
 	
 	@Test
-	public void getItemByIdTest() {
+	public void getItemByIdTest() throws Exception {
 		Item firstItem = TestUtil.getFirstItem();
 		Long id = firstItem.getId();
 		
@@ -61,7 +61,7 @@ public class ItemControllerUnitTest {
 	}
 	
 	@Test
-	public void getItemsByNameTest() {
+	public void getItemsByNameTest() throws Exception {
 		Item firstItem = TestUtil.getFirstItem();
 		String name = firstItem.getName();
 		
@@ -76,7 +76,7 @@ public class ItemControllerUnitTest {
 	}
 	
 	@Test
-	public void getItemsByNameNullTest() {
+	public void getItemsByNameNullTest() throws Exception {
 		Item firstItem = TestUtil.getFirstItem();
 		String name = firstItem.getName();
 		
@@ -89,7 +89,7 @@ public class ItemControllerUnitTest {
 	}
 	
 	@Test
-	public void getItemsByNameNoItemsTest() {
+	public void getItemsByNameNoItemsTest() throws Exception {
 		Item firstItem = TestUtil.getFirstItem();
 		String name = firstItem.getName();
 		
